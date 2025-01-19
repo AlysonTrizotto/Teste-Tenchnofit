@@ -14,11 +14,20 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-    command: bash -c "composer install && php artisan serve --host=0.0.0.0 --port=8081"
+    command: bash -c "composer install && docker-php-entrypoint php -d variables_order=EGPCS /var/www/app/artisan octane:start --server=frankenphp --host=0.0.0.0 --port=8000
     ports:
       - "8081:8081"
     tty: true
     stdin_open: true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - DB_HOST=host.docker.internal
+      - DB_PORT=5432
+      - DB_DATABASE=teste_technofit
+      - DB_USERNAME=postgres
+      - DB_PASSWORD='123456789'
+
 
   composer:
     image: composer:latest
@@ -29,26 +38,6 @@ services:
     networks:
       - laravel_network_technofit
     command: composer install
-
-  mysql:
-    image: mysql:8.0
-    container_name: mysql_technofit
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: laravel_technofit_db
-      MYSQL_USER: laravel_technofit_user
-      MYSQL_PASSWORD: laravel_technofit_password
-    ports:
-      - "3308:3306"
-    networks:
-      - laravel_network_technofit
-    volumes:
-      - mysql_technofit_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 10s
-      retries: 5
 
   octane:
     build: .

@@ -1,0 +1,156 @@
+{
+	"info": {
+		"_postman_id": "ed189453-b714-4da9-a3e7-ce02c9fe44dd",
+		"name": "API Documentation #Teste Technofit",
+		"description": "Esta documentação descreve como utilizar a coleção Postman para interagir com a API desenvolvida para o teste Technofit. A API permite consultar informações sobre movimentos e usuários, além de fornecer um ranking de recordes pessoais.\n\n---\n\n## **Configuração do Ambiente**\n\nAntes de começar, configure o ambiente no Postman:\n\n1. **Variáveis de Ambiente**:\n    \n    - `baseUrlV1`: URL base da API. Por padrão, está configurada como `http://127.0.0.1:8000`.\n        \n2. **Como Configurar**:\n    \n    - No Postman, vá para a seção **Environments**.\n        \n    - Crie um novo ambiente ou edite um existente.\n        \n    - Adicione a variável `baseUrlV1` com o valor `http://127.0.0.1:8000` (ou a URL do seu servidor).\n        \n\n---\n\n## **Endpoints**\n\n### **1\\. Consultar Movimentos**\n\nRetorna uma lista de movimentos com base em um termo de pesquisa.\n\n#### **Requisição**\n\n- **Método**: `GET`\n    \n- **URL**: `{{baseUrlV1}}/movements?search=Back`\n    \n- **Headers**:\n    \n    - `Accept: application/json`\n        \n\n#### **Parâmetros**\n\n- `search` (query string): Termo de pesquisa para filtrar os movimentos.\n    \n\n#### **Exemplo de Requisição**\n\n```\nGET {{baseUrlV1}}/movements?search=Back\nAccept: application/json\n\n ```\n\n#### **Respostas**\n\n1. **Resposta de Sucesso (200 OK)**:\n    \n    - `{ \"success\": true, \"data\": [ { \"position\": 1, \"persons\": [ { \"moviment_name\": \"Back Squat\", \"user_name\": \"Jose\", \"personal_record_value\": 130, \"personal_record_date\": \"2021-01-03 00:00:00\" }, { \"moviment_name\": \"Back Squat\", \"user_name\": \"Joao\", \"personal_record_value\": 130, \"personal_record_date\": \"2021-01-03 00:00:00\" } ] }, { \"position\": 2, \"persons\": [ { \"moviment_name\": \"Back Squat\", \"user_name\": \"Paulo\", \"personal_record_value\": 125, \"personal_record_date\": \"2021-01-03 00:00:00\" } ] }, { \"position\": 3, \"persons\": [ { \"moviment_name\": \"Back Squat\", \"user_name\": \"Jose\", \"personal_record_value\": 120, \"personal_record_date\": \"2021-01-01 00:00:00\" }, { \"moviment_name\": \"Back Squat\", \"user_name\": \"Paulo\", \"personal_record_value\": 120, \"personal_record_date\": \"2021-01-01 00:00:00\" } ] }, { \"position\": 4, \"persons\": [ { \"moviment_name\": \"Back Squat\", \"user_name\": \"Joao\", \"personal_record_value\": 110, \"personal_record_date\": \"2021-01-05 00:00:00\" } ] }, { \"position\": 5, \"persons\": [ { \"moviment_name\": \"Back Squat\", \"user_name\": \"Joao\", \"personal_record_value\": 100, \"personal_record_date\": \"2021-01-01 00:00:00\" } ] } ], \"message\": \"Success on search personal records\"}`\n        \n\n---\n\n## **Explicação dos Campos**\n\n### **Resposta de Sucesso (200 OK)**\n\n- **success**: Indica se a requisição foi bem-sucedida (`true` ou `false`).\n    \n- **data**: Contém a lista de movimentos e seus respectivos rankings.\n    \n    - `position`: Posição no ranking.\n        \n    - `persons`: Lista de usuários com o mesmo recorde pessoal.\n        \n        - `moviment_name`: Nome do movimento.\n            \n        - `user_name`: Nome do usuário.\n            \n        - `personal_record_value`: Valor do recorde pessoal.\n            \n        - `personal_record_date`: Data do recorde pessoal.\n            \n- **message**: Mensagem descritiva da resposta.\n    \n\n---\n\n## **Testes Automatizados**\n\nA coleção inclui scripts de teste para validar as respostas da API. Os testes são executados automaticamente após cada requisição.\n\n### **Exemplo de Teste**\n\njavascriptCopy\n\n```\n// Verifica se o status da resposta é 200 OK\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n// Verifica se a resposta contém o campo 'data'\npm.test(\"Response has data\", function () {\n    pm.expect(pm.response.json()).to.have.property('data');\n});\n\n ```\n\n---\n\n## **Como Executar a Coleção**\n\n1. **Importe a Coleção**:\n    \n    - No Postman, clique em **Import** e selecione o arquivo JSON da coleção.\n        \n2. **Configure o Ambiente**:\n    \n    - Certifique-se de que o ambiente está configurado com a variável `baseUrlV1`.\n        \n3. **Execute as Requisições**:\n    \n    - Navegue até a requisição `movements` e clique em **Send** para executá-la.\n        \n4. **Verifique os Resultados**:\n    \n    - A resposta será exibida na aba **Response**.\n        \n    - Os testes automatizados serão executados e os resultados aparecerão na aba **Test Results**.\n        \n\n---\n\n## **Considerações Finais**\n\n- Certifique-se de que o servidor da API está em execução antes de fazer as requisições.\n    \n\n---\n\n## **Repositório Git**\n\nO código-fonte da API e a coleção Postman estão disponíveis no repositório Git:  \n[Link do Repositório](https://github.com/AlysonTrizotto/Teste-Tenchnofit)\n\n---\n\nEsta documentação cobre todos os aspectos necessários para utilizar a coleção Postman e interagir com a API. Em caso de dúvidas, consulte o repositório Git ou entre em contato com o desenvolvedor.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19255200"
+	},
+	"item": [
+		{
+			"name": "Moviment",
+			"item": [
+				{
+					"name": "movements",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrlV1}}movements?search=Back",
+							"host": [
+								"{{baseUrlV1}}movements"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "Back"
+								}
+							]
+						},
+						"description": "Gets information about the authenticated user."
+					},
+					"response": [
+						{
+							"name": "movements",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrlV1}}movements?search=Back",
+									"host": [
+										"{{baseUrlV1}}movements"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "Back"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 19 Jan 2025 23:31:18 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Caddy"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.4.2"
+								},
+								{
+									"key": "Content-Length",
+									"value": "199"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"position\": 1,\n            \"persons\": [\n                {\n                    \"moviment_name\": \"Back Squat\",\n                    \"user_name\": \"Jose\",\n                    \"personal_record_value\": 130,\n                    \"personal_record_date\": \"2021-01-03 00:00:00\"\n                },\n                {\n                    \"moviment_name\": \"Back Squat\",\n                    \"user_name\": \"Joao\",\n                    \"personal_record_value\": 130,\n                    \"personal_record_date\": \"2021-01-03 00:00:00\"\n                }\n            ]\n        },\n        {\n            \"position\": 2,\n            \"persons\": [\n                {\n                    \"moviment_name\": \"Back Squat\",\n                    \"user_name\": \"Paulo\",\n                    \"personal_record_value\": 125,\n                    \"personal_record_date\": \"2021-01-03 00:00:00\"\n                }\n            ]\n        },\n        {\n            \"position\": 3,\n            \"persons\": [\n                {\n                    \"moviment_name\": \"Back Squat\",\n                    \"user_name\": \"Jose\",\n                    \"personal_record_value\": 120,\n                    \"personal_record_date\": \"2021-01-01 00:00:00\"\n                },\n                {\n                    \"moviment_name\": \"Back Squat\",\n                    \"user_name\": \"Paulo\",\n                    \"personal_record_value\": 120,\n                    \"personal_record_date\": \"2021-01-01 00:00:00\"\n                }\n            ]\n        },\n        {\n            \"position\": 4,\n            \"persons\": [\n                {\n                    \"moviment_name\": \"Back Squat\",\n                    \"user_name\": \"Joao\",\n                    \"personal_record_value\": 110,\n                    \"personal_record_date\": \"2021-01-05 00:00:00\"\n                }\n            ]\n        },\n        {\n            \"position\": 5,\n            \"persons\": [\n                {\n                    \"moviment_name\": \"Back Squat\",\n                    \"user_name\": \"Joao\",\n                    \"personal_record_value\": 100,\n                    \"personal_record_date\": \"2021-01-01 00:00:00\"\n                }\n            ]\n        }\n    ],\n    \"message\": \"Success on search personal records\"\n}"
+						}
+					]
+				}
+			],
+			"description": "The `/me` endpoints let you manage information about the authenticated user."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrlV1",
+			"value": "http://127.0.0.1:8000"
+		}
+	]
+}
