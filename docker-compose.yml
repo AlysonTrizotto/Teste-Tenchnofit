@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: laravel_technofit
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    env_file:
+      - .env
+    networks:
+      - laravel_network_technofit
+    depends_on:
+      mysql:
+        condition: service_healthy
+    command: bash -c "composer install && php artisan serve --host=0.0.0.0 --port=8081"
+    ports:
+      - "8081:8081"
+    tty: true
+    stdin_open: true
+
+  composer:
+    image: composer:latest
+    container_name: composer_technofit
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - laravel_network_technofit
+    command: composer install
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_technofit
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel_technofit_db
+      MYSQL_USER: laravel_technofit_user
+      MYSQL_PASSWORD: laravel_technofit_password
+    ports:
+      - "3308:3306"
+    networks:
+      - laravel_network_technofit
+    volumes:
+      - mysql_technofit_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  octane:
+    build: .
+    container_name: octane_technofit
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    env_file:
+      - .env
+    depends_on:
+      app:
+        condition: service_started
+    entrypoint: ["php", "artisan", "octane:frankenphp", "--host=0.0.0.0", "--port=8001"]
+    ports:
+      - "8001:8001"
+    networks:
+      - laravel_network_technofit
+
+volumes:
+  mysql_technofit_data:
+
+networks:
+  laravel_network_technofit:
