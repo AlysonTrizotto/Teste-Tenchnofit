@@ -10,3 +10,13 @@ Como subir a aplicação?
 - Passo 6: execute: docker build -t teste-technofit .
 - Passo 7: docker run -it --rm -p 8000:8000 teste-technofit
 - Pronto! Agora é só chamar a rota: http://127.0.0.1:8000/api/v1/movements?search=Back
+
+* Dentro da pasta '/teste_docs' tem: 
+- Collection postam;
+- PDF do teste,
+- vídeo do teste de carga realizado.
+- vídeo de stress 100 Virtual Users, 5 min.
+
+* Caso necessário, execute as migrations e seeders.
+- php artisan migrate
+- php artisan db:seed --class=DatabaseSeeder
